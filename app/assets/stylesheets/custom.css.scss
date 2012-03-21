@@ -5,7 +5,7 @@ $grayLight: #999;
 $grayMediumLight:#eaeaea;
 $gray:#555;
 $grayDarker:#222;
-$grayLighter: ligthten($grayLight, 10%);
+$grayLighter: lighten($grayLight, 10%);
 
 /*adds SASS mixin facility, which allows a group of rules to be packaged together for multiple elements*/
 @mixin box_sizing {
