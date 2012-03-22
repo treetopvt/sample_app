@@ -5,6 +5,8 @@ gem 'bootstrap-sass', '2.0.0'
 gem 'pg', '0.12.2'
 gem 'bcrypt-ruby', '3.0.1'
 
+
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -14,6 +16,9 @@ group :development, :test do
 	gem 'annotate', '~> 2.4.1.beta'
 	gem 'cucumber-rails', '1.2.1'
 	gem 'database_cleaner', '0.7.0'
+	# gem 'ruby-debug19', :require => 'ruby-debug'
+	# gem 'linecache19', '0.5.13'
+	# gem 'ruby-debug-base19', '0.11.26'
 end
 
 

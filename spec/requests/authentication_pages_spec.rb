@@ -8,6 +8,48 @@ describe "Authentication" do
 		it {should have_selector('h1', text:'Sign in') }
 		it {should have_selector('title', text:full_title('Sign in')) }
 
+	describe "Authentication" do
+
+		describe "Authorization" do
+
+			describe "as wrong user" do
+				let(:user) { FactoryGirl.create(:user) }
+				let(:wrong_user) { FactoryGirl.create(:user, email:"wrong@example.com") }
+				before { sign_in user }
+
+				describe "Visiting Users#edit page" do
+					before { visit edit_user_path(wrong_user) }
+					it { should have_selector('title', text: full_title('')) }
+				end
+
+				describe "submitting a PUT request to the Users#update action" do
+					before { put user_path(wrong_user) } #put is an update?
+					specify{ response.should redirect_to(root_path) }
+				end
+			end
+
+			describe "for non-signed-in users" do
+				let(:user) { FactoryGirl.create(:user) }
+
+				describe "in the Users controller" do
+					describe "visiting the edit page" do
+						before { visit edit_user_path(user) }
+						it { should have_selector('title', text:full_title('Sign in')) }
+					end
+
+					describe "submitting to the update action" do
+						before { put user_path(user) } #this issues a PUT request directly to /users/1 which gets
+						#routed to the update action of the Users controller. This is necessary because there is
+						#no way for a browser to directly visit the update action, so Capybara (testing) can't do it.
+						#FYI, Rails tests also support get, post, and delete (4 main verbs)
+						specify { response.should redirect_to(signin_path) }
+					end
+				end
+			end
+		end
+	end
+
+
 		describe "when invalid information is entered" do
 			before { click_button "Sign in" }
 

@@ -23,6 +23,10 @@ module SessionsHelper
 	def current_user
 		@current_user ||= user_from_remember_token #only set current user if @current user is undefined
 	end
+	def current_user?(user)
+		user == current_user
+
+	end
 
 	private
 		def user_from_remember_token
