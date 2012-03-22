@@ -3,6 +3,41 @@ require 'spec_helper'
 describe "User Pages" do
 	subject {page}
 
+	describe "edit" do
+		let(:user) { FactoryGirl.create(:user) }
+		before { visit edit_user_path(user) }
+
+		describe "page" do
+			it { should have_selector('h1',		text:"Update your profile") }
+			it { should have_selector('title',		text:full_title('Edit User')) }
+			it { should have_link('change',		href:"http://gravatar.com/emails") }
+		end
+
+		describe "with invalid edit information" do
+			before { click_button "Save changes" }
+			it { should have_content('error') }
+		end
+
+		describe "with valid edit information" do
+			let(:new_name) { "New Name"}
+			let(:new_email) { "newemail@example.com" }
+			before do
+				fill_in "Name", 			with:new_name
+				fill_in "Email",			with:new_email
+				fill_in "Password",			with:user.password
+				fill_in "Confirmation",		with:user.password
+				click_button "Save changes"
+			end
+
+			it { should have_selector('title', text: new_name) }
+			it { should have_selector('div.alert.alert-success') }
+			it { should have_link('Sign out', :href => signout_path) }
+			specify { user.reload.name.should == new_name }
+			specify { user.reload.email.should == new_email } #same as it, but sounds better in this case
+
+		end
+	end
+
 	describe "signup page" do
 		before {visit signup_path}
 
